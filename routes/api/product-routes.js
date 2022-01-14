@@ -8,7 +8,16 @@ router.get('/', (req, res) => {
 
   // find all products
 
-  Product.findAll()
+  Product.findAll({
+    include:[
+      Category,
+      {
+        model:Tag,
+        through:ProductTag
+      }
+    ]
+  })
+  .then(data => res.json(data))
   .catch(err => {
     console.log(err);
     res.status(500).json(err);
@@ -27,8 +36,16 @@ router.get('/:id', (req, res) => {
   Product.findOne({
     where: {
       id: req.params.id
-    }
+    },
+    include:[
+      Category,
+      {
+        model:Tag,
+        through:ProductTag
+      }
+    ]
   })
+  .then(data => res.json(data))
   .catch(err => {
     console.log(err);
     res.status(500).json(err);
@@ -121,6 +138,7 @@ router.delete('/:id', (req, res) => {
       id: req.params.id
     }
   })
+  .then(data => res.json(data))
   .catch(err => {
     console.log(err);
     res.status(500).json(err);

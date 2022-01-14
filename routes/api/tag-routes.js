@@ -5,7 +5,15 @@ const { Tag, Product, ProductTag } = require('../../models');
 
 router.get('/', (req, res) => {
   // find all tags
-  Tag.findAll()
+  Tag.findAll({
+    include:[
+      {
+        model:Product,
+        through:ProductTag
+      }
+    ]
+  })
+  .then(data => res.json(data))
   .catch(err => {
     console.log(err);
     res.status(500).json(err);
@@ -18,8 +26,15 @@ router.get('/:id', (req, res) => {
   Tag.findOne({
     where: {
       id: req.params.id
-    }
+    },
+    include:[
+      {
+        model:Product,
+        through:ProductTag
+      }
+    ]
   })
+  .then(data => res.json(data))
   .catch(err => {
     console.log(err);
     res.status(500).json(err);
@@ -29,9 +44,8 @@ router.get('/:id', (req, res) => {
 
 router.post('/', (req, res) => {
   // create a new tag
-  Tag.create({
-    tag_name: req.body.tag_name
-  })
+  Tag.create(req.body)
+  .then(data => res.json(data))
   .catch(err => {
     console.log(err);
     res.status(500).json(err);
@@ -44,6 +58,7 @@ router.put('/:id', (req, res) => {
       id: req.params.id
     }
   })
+  .then(data => res.json(data))
   .catch(err => {
     console.log(err);
     res.status(500).json(err);
@@ -56,6 +71,7 @@ router.delete('/:id', (req, res) => {
       id: req.params.id
     }
   })
+  .then(data => res.json(data))
   .catch(err => {
     console.log(err);
     res.status(500).json(err);
