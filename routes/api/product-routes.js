@@ -55,9 +55,14 @@ router.get('/:id', (req, res) => {
 
 });
 
+
+
+//This is school starter code and its not working on my post route so I'm gonna update
+//it the way I have been doing but keep it in here for office hours to ask questions on it
+
 // create new product
 
-router.post('/', (req, res) => {
+/*router.post('/', (req, res) => {
   /* req.body should look like this...
     {
       product_name: "Basketball",
@@ -65,7 +70,7 @@ router.post('/', (req, res) => {
       stock: 3,
       tagIds: [1, 2, 3, 4]
     }
-  */
+  
 
   Product.create(req.body)
     .then((product) => {
@@ -129,7 +134,34 @@ router.put('/:id', (req, res) => {
       // console.log(err);
       res.status(400).json(err);
     });
+});*/
+
+
+
+router.post('/', (req, res) => {
+  // create a new tag
+  Product.create(req.body)
+  .then(data => res.json(data))
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  });
 });
+
+
+router.put('/:id', (req, res) => {
+  Product.update(req.body, {
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(data => res.json(data))
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
+  });
+});
+
 
 router.delete('/:id', (req, res) => {
   // delete one product by its `id` value
